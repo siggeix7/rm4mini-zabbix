@@ -11,7 +11,7 @@ zabbix_export:
         - name: IOT
       items:
         - uuid: 280703e847f74837b57f7f7982ee7e2d
-          name: 'Script Temperatura e Umidità'
+          name: 'Script dati RM4 mini'
           type: EXTERNAL
           key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
           delay: 6s
@@ -41,6 +41,88 @@ zabbix_export:
             - type: JSONPATH
               parameters:
                 - $.Hum
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: 8dcdbf5a1c8e4f3e8df4c7a13ebf4e11
+          name: 'Nome dispositivo'
+          type: DEPENDENT
+          key: rm4mini.device.name
+          history: 90d
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.DeviceName
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: 69a3f417a0dc4f4588f647fbb2512d5d
+          name: 'Tipo dispositivo'
+          type: DEPENDENT
+          key: rm4mini.device.type
+          history: 90d
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.DeviceType
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: 936adcc4ad32440ea6c6a8d71ebc2e8a
+          name: 'Modello dispositivo'
+          type: DEPENDENT
+          key: rm4mini.device.model
+          history: 90d
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.Model
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: f26f8f6cb2a044c59de776a9197e5a9b
+          name: Produttore
+          type: DEPENDENT
+          key: rm4mini.device.manufacturer
+          history: 90d
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.Manufacturer
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: 0a3df64fe1f241f99a83c04efdc30280
+          name: 'Product ID'
+          type: DEPENDENT
+          key: rm4mini.device.product_id
+          history: 90d
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.ProductId
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: cf61e57c53fc4c80b13ecdf12f7c9ab4
+          name: 'Versione firmware'
+          type: DEPENDENT
+          key: rm4mini.device.firmware
+          history: 90d
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.FirmwareVersion
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: 4c5f7da12e914cae92f35b6a58c0a771
+          name: 'Dispositivo bloccato'
+          type: DEPENDENT
+          key: rm4mini.device.locked
+          history: 90d
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.Locked
           master_item:
             key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
       macros:
