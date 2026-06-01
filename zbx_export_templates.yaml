@@ -1,0 +1,48 @@
+zabbix_export:
+  version: '7.4'
+  template_groups:
+    - uuid: 2a61a18fdbf941a2b971bcd9dfb4d54f
+      name: IOT
+  templates:
+    - uuid: 0ccb61ee00e8484da284a19093a69d3f
+      template: RM4miniTempHum-SG
+      name: RM4miniTempHum-SG
+      groups:
+        - name: IOT
+      items:
+        - uuid: 280703e847f74837b57f7f7982ee7e2d
+          name: 'Script Temperatura e Umidità'
+          type: EXTERNAL
+          key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+          delay: 6s
+          history: '0'
+          value_type: TEXT
+        - uuid: 66e816a845684504af76ef6a2e2d633f
+          name: Temperatura
+          type: DEPENDENT
+          key: Temperatura
+          history: 90d
+          value_type: FLOAT
+          units: C°
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.Temp
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+        - uuid: b7d8c448fb2048c09704e92ffc48a14f
+          name: Umidità
+          type: DEPENDENT
+          key: Umidita
+          history: 90d
+          value_type: FLOAT
+          units: '%'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.Hum
+          master_item:
+            key: 'rm4mini-temphum.py[{$RM4MINIIP},{$RM4MINIMAC}]'
+      macros:
+        - macro: '{$RM4MINIIP}'
+        - macro: '{$RM4MINIMAC}'
